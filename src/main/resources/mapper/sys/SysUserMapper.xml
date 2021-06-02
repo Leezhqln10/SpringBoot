@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cy.pj.sys.dao.SysUserDao">
+
+	<select id="findUserByUserName"
+	        resultType="com.cy.pj.sys.entity.SysUser">
+	     select *
+	     from sys_users  
+	     where username=#{username}
+	</select>
+		
+
+	<update id="updateObjectById" parameterType="com.cy.pj.sys.entity.SysUser">
+		update sys_users
+		set username=#{username},email=#{email},mobile=#{mobile},modifiedTime=now(),modifiedUser=#{modifiedUser},deptId=#{deptId}
+		where id=#{id}	
+	</update>
+
+	<select id="findObjectById"
+			resultMap="User_Dept">
+		select id,username,password,salt,email,mobile,valid,deptId,createdTime,modifiedTime,createdUser,modifiedUser
+		from sys_users where id=#{id}
+	</select>
+
+	<insert id="insertObject"
+			parameterType="com.cy.pj.sys.entity.SysUser"
+			keyProperty="id"
+			useGeneratedKeys="true">
+		insert into sys_users
+			(id,username,password,salt,email,mobile,valid,deptId,
+			createdTime,modifiedTime,createdUser,modifiedUser)
+		values(null,#{username},#{password},#{salt},#{email},#{mobile},#{valid},#{deptId},
+			now(),now(),#{createdUser},#{modifiedUser})
+	</insert>
+	
+	<sql id="fromwhere">
+		from sys_users
+		<where>
+			<if test="username!=null and username!=''">
+				username like concat("%",#{username},"%")
+			</if>
+		</where>
+	</sql>
+	<!-- 查询总数 -->
+	<!-- <select id="getRowCount" resultType="int">
+		select count(*)
+		<include refid="fromwhere"/>
+	</select> -->
+	<!-- 分页查询 -->
+	<select id="findPageObjects"
+			resultMap="User_Dept">
+		select id,username,password,salt,email,mobile,valid,deptId,createdTime,modifiedTime,createdUser,modifiedUser
+		<include refid="fromwhere"></include>
+		order by createdTime desc 
+	</select>
+	<!-- resultMap元素用于实现mybatis框架中的高级映射 -->
+	<resultMap type="com.cy.pj.common.vo.SysUserDeptVo"
+			   id="User_Dept">
+			   <!-- association元素一般用于Many2one或one2one
+                                      在当前应用中是基于deptId查询部门信息然后存储到sysDept属性上-->
+			   <association property="sysDept"
+			   				column="deptId"
+			   				select="com.cy.pj.sys.dao.SysDeptDao.findById">
+			   </association>
+	</resultMap>
+	
+	<update id="validById">
+		update sys_users 
+			set valid=#{valid},modifiedUser=#{modifiedUser}
+		where id=#{id}
+	</update>
+	
+</mapper>

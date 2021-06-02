@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cy.pj.sys.dao.SysMenuDao">
+
+	<select id="findPermissionByIds"
+			resultType="String">
+		select permission from sys_menus
+		<where>
+			<choose>
+				<when test="ids!=null and ids.size()>0">
+					<foreach collection="ids"
+					  		 separator="or"
+					  		 item="id">
+						id=#{id}
+					</foreach>
+				</when>
+				<otherwise>
+					1=2
+				</otherwise>
+			</choose>
+		</where>
+	</select>
+
+	<!-- 查询所有菜单以及菜单对应的上级菜单名称 -->
+	<!-- 方案1：嵌套查询
+	<select id="findObjects" resultType="Map">
+		select c.*,(select p.name   
+					from sys_menus p 
+					where p.id=c.parentId) parentName
+		from sys_menus c
+	</select> -->
+	
+	<!-- 方案2：表关联查询 -->
+	<!-- <select id="findObjects" resultType="map">
+		select c.*,p.name parentName from sys_menus c left join sys_menus p on c.parentId=p.id
+	</select> -->
+	<select id="findObjects" resultType="com.cy.pj.sys.bo.SysMenu">
+		select c.*,p.name parentName from sys_menus c left join sys_menus p on c.parentId=p.id
+	</select>
+	
+	<select id="findZtreeMenuNodes" resultType="com.cy.pj.common.vo.Node">
+		select id, name, parentId 
+		from sys_menus
+	</select>
+	
+	<delete id="deletObject">
+		delete from sys_menus
+		where id =#{id}
+		       
+	</delete>
+	
+	<select id="getChildCount"
+             parameterType="int"
+             resultType="int">
+		select count(*)
+		from sys_menus
+		where parentId=#{id}        
+	</select>
+	
+	<insert id="insertObject" parameterType="com.cy.pj.sys.bo.SysMenu">
+		insert into sys_menus 
+		(name,url,type,sort,note,parentId,permission,
+			createdTime,modifiedTime,createdUser,modifiedUser)
+		values( #{name}, #{url}, #{type}, #{sort}, #{note}, #{parentId}, 
+			 #{permission}, now(), now(),#{createdUser}, #{modifiedUser} )
+	</insert>
+	
+	<update id="updateObject" >
+		update sys_menus set 
+			name=#{name},url=#{url},type=#{type},sort=#{sort},
+			note=#{note},parentId=#{parentId},permission=#{permission},
+			modifiedUser=#{modifiedUser},modifiedTime=now()
+		where id=#{id}
+	</update>
+	
+</mapper>

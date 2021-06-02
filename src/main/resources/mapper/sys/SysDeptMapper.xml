@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cy.pj.sys.dao.SysDeptDao">
+
+	<select id="findById" resultType="com.cy.pj.sys.bo.SysDept">
+		select id,name,parentId,sort,note,createdTime,modifiedTime,createdUser,modifiedUser 
+		from sys_depts 
+		where id=#{id}
+	</select>
+	
+	<select id="findObjects" resultType="com.cy.pj.sys.bo.SysDept">
+		select c.id, c.name, c.parentId, c.sort, c.note, c.createdTime, c.modifiedTime, c.createdUser, c.modifiedUser, p.name parentName
+		from sys_depts c left join sys_depts p on c.parentId = p.id
+		<where>
+			<if test="name != null and name!=''">
+				name like concat("%",#{name},"%")
+			</if>
+		</where>
+	</select>
+	
+	<select id="findZtreeObject" resultType="com.cy.pj.common.vo.Node">
+		select id, name, parentId
+		from sys_depts
+	</select>
+</mapper>

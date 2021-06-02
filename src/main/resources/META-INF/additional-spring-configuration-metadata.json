@@ -1,0 +1,27 @@
+{"properties": [
+  {
+    "name": "spring.task.execution.pool.thread-name-prefix",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.task.execution.pool.thread-name-prefix'"
+  },
+  {
+    "name": "async-thread-pool.core-pool-size",
+    "type": "java.lang.String",
+    "description": "A description for 'async-thread-pool.core-pool-size'"
+  },
+  {
+    "name": "async-thread-pool.maxPoolSize",
+    "type": "java.lang.String",
+    "description": "A description for 'async-thread-pool.maxPoolSize'"
+  },
+  {
+    "name": "async-thread-pool.keepAliveSeconds",
+    "type": "java.lang.String",
+    "description": "A description for 'async-thread-pool.keepAliveSeconds'"
+  },
+  {
+    "name": "async-thread-pool.queueCapacity",
+    "type": "java.lang.String",
+    "description": "A description for 'async-thread-pool.queueCapacity'"
+  }
+]}
