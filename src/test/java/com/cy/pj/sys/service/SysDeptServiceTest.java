@@ -6,8 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.cy.pj.sys.bo.SysDept;
-
 @SpringBootTest
 public class SysDeptServiceTest {
 
@@ -16,7 +14,7 @@ public class SysDeptServiceTest {
 	
 	@Test
 	public void testFindObjects() {
-		List<SysDept> list = sysDeptService.findObject("");
+		List<Long> list = sysDeptService.findObject("");
 		System.out.println(list);
 	}
 }

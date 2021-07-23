@@ -1,10 +1,14 @@
 package com.cy.pj.common.utils;
 
+import java.lang.reflect.AnnotatedType;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+
+import com.cy.pj.sys.entity.SysLog;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -37,4 +41,14 @@ public class IPUtils {
 		return ip;
 	}
 
+
+	public static void main(String[] args) {
+		SysLog sysLog = new SysLog();
+		Class<? extends SysLog> aClass = sysLog.getClass();
+		System.out.println(aClass);
+		AnnotatedType[] annotatedInterfaces = aClass.getAnnotatedInterfaces();
+		System.out.println(annotatedInterfaces.toString());
+		AnnotatedType annotatedSuperclass = aClass.getAnnotatedSuperclass();
+		System.out.println(annotatedSuperclass);
+	}
 }

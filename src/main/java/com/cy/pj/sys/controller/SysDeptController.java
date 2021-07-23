@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cy.pj.common.vo.JsonResult;
 import com.cy.pj.common.vo.Node;
-import com.cy.pj.sys.bo.SysDept;
 import com.cy.pj.sys.service.SysDeptService;
 
 @RestController
@@ -22,7 +21,7 @@ public class SysDeptController {
 	
 	@RequestMapping("doFindObjects")
 	public JsonResult doFindObjects(String name ) {
-		List<SysDept> object_list = sysDeptService.findObject(name);
+		List<Long> object_list = sysDeptService.findObject(name);
 		return new JsonResult(object_list);
 	}
 	
